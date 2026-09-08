@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Energy-Aware Solar Tracker"
+description = "An interactive 3D solar-tracking simulator that compares five tracking strategies, models solar and motor energy, and reveals which approach produces the highest net energy under changing conditions."
+version = "1.0.0"
+id = "artifacts/solar-tracker"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23923
+
+[services.development]
+run = "pnpm --filter @workspace/solar-tracker run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/solar-tracker", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/solar-tracker/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23923"
+BASE_PATH = "/"
